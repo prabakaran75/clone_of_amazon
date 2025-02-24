@@ -1,29 +1,44 @@
+import 'package:clone_of_amazon/common/widgets/loader.dart';
 import 'package:clone_of_amazon/constant/global_variables.dart';
 import 'package:clone_of_amazon/features/home/widgets/address_box.dart';
-import 'package:clone_of_amazon/features/home/widgets/carousal_images.dart';
-import 'package:clone_of_amazon/features/home/widgets/deal_of_the_day.dart';
-import 'package:clone_of_amazon/features/home/widgets/top_categories.dart';
-import 'package:clone_of_amazon/features/search/screens/search_screen.dart';
-// import 'package:clone_of_amazon/provider/user_provider.dart';
+import 'package:clone_of_amazon/features/product_details/screens/product_detail_screen.dart';
+import 'package:clone_of_amazon/features/search/services/search_services.dart';
+import 'package:clone_of_amazon/features/search/widgets/searched_products.dart';
+import 'package:clone_of_amazon/models/product_model.dart';
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String routeName = "/home";
-  const HomeScreen({super.key});
+class SearchScreen extends StatefulWidget {
+  static const String routeName = "/search-screen";
+  final String searchQuery;
+  const SearchScreen({super.key, required this.searchQuery});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SearchScreenState extends State<SearchScreen> {
+  List<ProductModel>? productList;
+  final SearchServices services = SearchServices();
+  fetchSearchedProduct() async {
+    productList = await services.fetchSearchProduct(
+      context: context,
+      searchQuery: widget.searchQuery,
+    );
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    fetchSearchedProduct();
+    super.initState();
+  }
+
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -37,9 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Container(
+                child: SizedBox(
                   height: 40,
-                  margin: EdgeInsets.only(left: 10),
                   child: Material(
                     color: Colors.white,
                     elevation: 1,
@@ -95,23 +109,33 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          AddressBox(),
-          SizedBox(
-            height: 10,
-          ),
-          TopCategories(),
-          SizedBox(
-            height: 10,
-          ),
-          CarousalImages(),
-          DealOfTheDay(),
-          SizedBox(
-            height: 10,
-          ),
-        ],
-      ),
+      body: productList == null
+          ? Loader()
+          : Column(
+              children: [
+                AddressBox(),
+                SizedBox(
+                  height: 5,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: productList!.length,
+                    itemBuilder: (context, index) {
+                      final product = productList![index];
+                      return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              ProductDetailScreen.routeName,
+                              arguments: product,
+                            );
+                          },
+                          child: SearchedProducts(product: product));
+                    },
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

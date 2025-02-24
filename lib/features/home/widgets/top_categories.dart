@@ -16,7 +16,11 @@ class TopCategories extends StatelessWidget {
           var categoryImage = GlobalVariables.categoryImages[index];
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, CategoryDealScreen.routeName);
+              Navigator.pushNamed(
+                context,
+                CategoryDealScreen.routeName,
+                arguments: categoryImage['title'],
+              );
             },
             child: Column(
               children: [
