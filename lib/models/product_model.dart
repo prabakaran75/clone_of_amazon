@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:clone_of_amazon/models/rating_model.dart';
+
 class ProductModel {
   final String name;
   final String desc;
@@ -9,7 +11,7 @@ class ProductModel {
   final String category;
   final List<String> images;
   final String? id;
-
+  final List<RatingModel>? rating;
   ProductModel({
     required this.name,
     required this.desc,
@@ -18,6 +20,7 @@ class ProductModel {
     required this.category,
     required this.images,
     this.id,
+    this.rating,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +32,7 @@ class ProductModel {
       'category': category,
       'images': images,
       'id': id,
+      'rating': rating,
     };
   }
 
@@ -41,6 +45,13 @@ class ProductModel {
       category: map['category'] ?? '',
       images: List<String>.from(map['images']),
       id: map['_id'],
+      rating: map['ratings'] != null
+          ? List<RatingModel>.from(
+              map['ratings']?.map(
+                (e) => RatingModel.fromMap(e),
+              ),
+            )
+          : null,
     );
   }
 
