@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:clone_of_amazon/constant/error_handling.dart';
 import 'package:clone_of_amazon/constant/global_variables.dart';
 import 'package:clone_of_amazon/constant/utils.dart';

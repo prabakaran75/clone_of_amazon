@@ -37,4 +37,30 @@ class ProductDetailService {
       showSnackBar(context, e.toString());
     }
   }
+
+  void addToCart({
+    required BuildContext context,
+    required ProductModel product,
+  }) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    try {
+      http.Response res = await http.post(
+        Uri.parse("$uri/api/add-to-cart"),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "x-auth-token": userProvider.user.token,
+        },
+        body: jsonEncode({
+          "id": product.id,
+        }),
+      );
+      httpErrorHandling(
+        response: res,
+        context: context,
+        onSuccess: () {},
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }

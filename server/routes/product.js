@@ -1,7 +1,7 @@
 const express = require("express")
 const productRouter = express.Router();
 const auth = require("../middlewares/authMidleware")
-const Product = require("../models/product")
+const {Product} = require("../models/product")
 //query -> ?
 //params -> :
 productRouter.get("/api/products", auth, async(req, res) => {
@@ -56,7 +56,7 @@ productRouter.post("/api/rate-product", auth, async(req, res) => {
 
 productRouter.get("/api/deal-of-day", auth, async(req,res) => {
     try{
-        var products = await Product.find({});
+        let products = await Product.find({});
         products = products.sort((a,b) => {
             let aSum = 0;
             let bSum = 0;

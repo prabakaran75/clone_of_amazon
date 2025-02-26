@@ -20,13 +20,15 @@ class AuthService {
   }) async {
     try {
       UserModel userModel = UserModel(
-          id: "",
-          name: name,
-          email: email,
-          password: password,
-          address: "",
-          type: "",
-          token: "");
+        id: "",
+        name: name,
+        email: email,
+        password: password,
+        address: "",
+        type: "",
+        token: "",
+        cart: [],
+      );
 
       http.Response res = await http.post(
         Uri.parse("$uri/api/signup"),
@@ -57,13 +59,15 @@ class AuthService {
   }) async {
     try {
       UserModel userModel = UserModel(
-          id: '',
-          name: '',
-          email: email,
-          password: password,
-          address: '',
-          type: '',
-          token: '');
+        id: '',
+        name: '',
+        email: email,
+        password: password,
+        address: '',
+        type: '',
+        token: '',
+        cart: [],
+      );
       http.Response res = await http.post(
         Uri.parse("$uri/api/signin"),
         body: userModel.toJson(),
