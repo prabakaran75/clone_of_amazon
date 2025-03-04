@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clone_of_amazon/common/widgets/custom_button.dart';
 import 'package:clone_of_amazon/common/widgets/stars.dart';
@@ -43,6 +42,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   void navigateToSearchScreen(String query) {
     Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+  }
+
+  void addToCart() {
+    productService.addToCart(context: context, product: widget.product);
   }
 
   @override
@@ -203,7 +206,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.all(8.0),
               child: CustomButton(
                 text: "Add to cart",
-                onTap: () {},
+                onTap: addToCart,
                 color: Colors.yellowAccent,
               ),
             ),
