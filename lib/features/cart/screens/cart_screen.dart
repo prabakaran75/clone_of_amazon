@@ -1,8 +1,10 @@
 import 'package:clone_of_amazon/common/widgets/custom_button.dart';
 import 'package:clone_of_amazon/constant/global_variables.dart';
+import 'package:clone_of_amazon/features/address/screens/address_screen.dart';
 import 'package:clone_of_amazon/features/cart/widgets/cart_product.dart';
 import 'package:clone_of_amazon/features/cart/widgets/cartsub_total.dart';
 import 'package:clone_of_amazon/features/home/widgets/address_box.dart';
+import 'package:clone_of_amazon/features/search/screens/search_screen.dart';
 import 'package:clone_of_amazon/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +18,13 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   void navigateToSearchScreen(String query) {
-    // Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
+    Navigator.pushNamed(context, SearchScreen.routeName, arguments: query);
   }
+
+  void navigateToAddress() {
+    Navigator.pushNamed(context, AddressScreen.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<UserProvider>().user;
@@ -108,7 +115,7 @@ class _CartScreenState extends State<CartScreen> {
               child: CustomButton(
                 text: "Proceed to Buy (${user.cart.length} items)",
                 color: Colors.yellow[600],
-                onTap: () {},
+                onTap: () => navigateToAddress(),
               ),
             ),
             SizedBox(
